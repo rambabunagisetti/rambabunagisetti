@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Rambabu Nagisetti | Lead XR Engineer · Unity3D & Meta Quest Specialist</title>
+<meta name="description" content="Lead XR Engineer with 2+ years building production VR/AR/MR applications on Meta Quest, WebXR and Desktop VR. 8+ shipped titles in healthcare, industrial training and education."/>
+<meta property="og:title" content="Rambabu Nagisetti — Lead XR Engineer"/>
+<meta property="og:description" content="Building the future of immersive reality with Unity3D, Meta Quest & WebXR."/>
+<meta property="og:type" content="website"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+/* =========================================================
+   DESIGN SYSTEM
+   ========================================================= */
+:root{
+  --bg:       #020608;
+  --bg1:      #040d12;
+  --bg2:      #071520;
+  --bg3:      #0a1e2e;
+  --xr:       #00d4ff;
+  --xr2:      #00f5ff;
+  --purple:   #8b5cf6;
+  --pink:     #ec4899;
+  --green:    #10f5a0;
+  --white:    #f0f8ff;
+  --muted:    #4a7a96;
+  --border:   rgba(0,212,255,.12);
+  --glass:    rgba(7,21,32,.65);
+  --glow-xr:  0 0 30px rgba(0,212,255,.45);
+  --glow-p:   0 0 30px rgba(139,92,246,.45);
+  --font-h:   'Syne', sans-serif;
+  --font-b:   'Sora', sans-serif;
+  --font-m:   'DM Mono', monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{
+  background:var(--bg);
+  color:var(--white);
+  font-family:var(--font-b);
+  line-height:1.75;
+  overflow-x:hidden;
+  cursor:none;
+}
+a{color:var(--xr);text-decoration:none;transition:color .2s;}
+a:hover{color:var(--xr2);}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--xr);border-radius:3px;}
+
+/* =========================================================
+   CUSTOM CURSOR
+   ========================================================= */
+#cursor{
+  position:fixed;width:12px;height:12px;
+  background:var(--xr);border-radius:50%;
+  pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:width .15s,height .15s,background .15s;
+  mix-blend-mode:difference;
+}
+#cursor-ring{
+  position:fixed;width:38px;height:38px;
+  border:1px solid rgba(0,212,255,.55);
+  border-radius:50%;pointer-events:none;
+  z-index:9998;transform:translate(-50%,-50%);
+  transition:all .12s ease;
+}
+body:hover #cursor{opacity:1;}
+
+/* =========================================================
+   THREE.JS CANVAS
+   ========================================================= */
+#hero-canvas{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  opacity:.85;
+}
+
+/* =========================================================
+   NOISE + SCANLINES OVERLAY
+   ========================================================= */
+body::after{
+  content:'';position:fixed;inset:0;
+  background-image:repeating-linear-gradient(
+    0deg,transparent,transparent 2px,
+    rgba(0,0,0,.04) 2px,rgba(0,0,0,.04) 4px
+  );
+  pointer-events:none;z-index:0;opacity:.35;
+}
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 5vw;height:68px;
+  background:rgba(2,6,8,.8);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  transition:box-shadow .4s;
+}
+nav.active{box-shadow:0 4px 40px rgba(0,212,255,.08);}
+.nav-logo{
+  font-family:var(--font-h);font-size:1rem;
+  font-weight:800;letter-spacing:.08em;
+  color:var(--white);
+}
+.nav-logo em{color:var(--xr);font-style:normal;}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{
+  font-family:var(--font-m);font-size:.72rem;
+  color:var(--muted);letter-spacing:.18em;
+  text-transform:uppercase;transition:color .2s;
+  position:relative;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-6px;left:0;right:0;
+  height:1px;background:var(--xr);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .3s;
+}
+.nav-links a:hover{color:var(--xr);}
+.nav-links a:hover::after{transform:scaleX(1);}
+.nav-cta{
+  font-family:var(--font-m);font-size:.72rem;
+  color:var(--xr);border:1px solid var(--xr);
+  padding:.4rem 1rem;border-radius:4px;
+  letter-spacing:.12em;transition:all .2s;
+}
+.nav-cta:hover{background:var(--xr);color:#020608;box-shadow:var(--glow-xr);}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:none;padding:4px;}
+.hamburger span{display:block;width:22px;height:2px;background:var(--xr);transition:.3s;}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+#hero{
+  position:relative;min-height:100vh;
+  display:flex;align-items:center;
+  padding:80px 5vw 0;overflow:hidden;
+}
+.hero-body{position:relative;z-index:2;max-width:760px;}
+.hero-eyebrow{
+  font-family:var(--font-m);font-size:.72rem;
+  color:var(--xr);letter-spacing:.3em;
+  text-transform:uppercase;margin-bottom:1.4rem;
+  opacity:0;animation:riseIn .7s .2s forwards;
+}
+.hero-eyebrow::before{
+  content:'';display:inline-block;
+  width:32px;height:1px;background:var(--xr);
+  vertical-align:middle;margin-right:.8rem;
+}
+h1.hero-title{
+  font-family:var(--font-h);font-weight:800;
+  font-size:clamp(2.2rem,5.5vw,4.2rem);
+  line-height:1.08;letter-spacing:-.01em;
+  color:var(--white);
+  opacity:0;animation:riseIn .7s .35s forwards;
+}
+h1.hero-title .grad{
+  background:linear-gradient(90deg,var(--xr),var(--purple));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-sub{
+  margin-top:1.2rem;font-size:1.05rem;
+  color:rgba(240,248,255,.6);max-width:540px;
+  opacity:0;animation:riseIn .7s .5s forwards;
+}
+.hero-btns{
+  margin-top:2.2rem;display:flex;gap:1rem;
+  flex-wrap:wrap;
+  opacity:0;animation:riseIn .7s .65s forwards;
+}
+.btn{
+  display:inline-flex;align-items:center;gap:.55rem;
+  padding:.8rem 1.8rem;border-radius:6px;
+  font-family:var(--font-m);font-size:.78rem;
+  letter-spacing:.1em;cursor:none;
+  transition:all .25s;border:none;
+}
+.btn-xr{
+  background:linear-gradient(135deg,var(--xr),var(--purple));
+  color:#020608;font-weight:700;
+}
+.btn-xr:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,212,255,.35);color:#020608;}
+.btn-ghost{
+  background:transparent;color:var(--xr);
+  border:1px solid rgba(0,212,255,.4);
+}
+.btn-ghost:hover{background:rgba(0,212,255,.08);box-shadow:var(--glow-xr);transform:translateY(-3px);color:var(--xr);}
+
+/* Float badges */
+.hero-badges{
+  margin-top:2.8rem;display:flex;flex-wrap:wrap;gap:.7rem;
+  opacity:0;animation:riseIn .7s .8s forwards;
+}
+.badge{
+  font-family:var(--font-m);font-size:.68rem;
+  letter-spacing:.12em;padding:.35rem .85rem;
+  border-radius:100px;border:1px solid rgba(0,212,255,.25);
+  background:rgba(0,212,255,.06);color:rgba(240,248,255,.7);
+  animation:floatBadge 3s ease-in-out infinite;
+}
+.badge:nth-child(2n){animation-delay:.4s;}
+.badge:nth-child(3n){animation-delay:.8s;}
+.badge:nth-child(4n){animation-delay:1.2s;}
+
+/* Stats bar */
+.hero-stats{
+  margin-top:3.5rem;display:flex;gap:2.5rem;flex-wrap:wrap;
+  opacity:0;animation:riseIn .7s 1s forwards;
+}
+.hstat .num{
+  font-family:var(--font-h);font-size:2rem;font-weight:800;
+  color:var(--xr);line-height:1;
+}
+.hstat .lbl{
+  font-family:var(--font-m);font-size:.65rem;
+  color:var(--muted);letter-spacing:.12em;margin-top:.3rem;
+}
+
+/* =========================================================
+   XR HEADSET 3D WIREFRAME (CSS)
+   ========================================================= */
+.xr-device{
+  position:absolute;right:5vw;top:50%;
+  transform:translateY(-50%);
+  width:380px;height:320px;
+  opacity:0;animation:riseIn 1s .4s forwards;
+  pointer-events:none;
+  display:flex;align-items:center;justify-content:center;
+}
+.xr-device svg{width:100%;height:100%;}
+
+/* =========================================================
+   SECTION COMMON
+   ========================================================= */
+section{padding:110px 5vw;position:relative;z-index:1;}
+.sh{
+  display:flex;align-items:center;gap:1.2rem;
+  margin-bottom:3.5rem;
+}
+.sh-num{
+  font-family:var(--font-m);font-size:.7rem;
+  color:var(--xr);letter-spacing:.2em;
+}
+.sh-title{
+  font-family:var(--font-h);font-size:clamp(1.5rem,3vw,2.1rem);
+  color:var(--white);font-weight:800;letter-spacing:.03em;
+}
+.sh-line{flex:1;height:1px;background:linear-gradient(90deg,var(--xr),transparent);opacity:.2;}
+
+/* Reveal animation */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .65s,transform .65s;}
+.reveal.on{opacity:1;transform:translateY(0);}
+
+/* =========================================================
+   ABOUT
+   ========================================================= */
+#about{background:var(--bg1);}
+.about-wrap{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+
+.about-visual{
+  position:relative;display:flex;align-items:center;justify-content:center;
+  height:380px;
+}
+.about-ring{
+  position:absolute;
+  border-radius:50%;border:1px solid rgba(0,212,255,.2);
+  animation:spin 20s linear infinite;
+}
+.ar1{width:300px;height:300px;}
+.ar2{width:220px;height:220px;border-color:rgba(139,92,246,.2);animation-duration:14s;animation-direction:reverse;}
+.ar3{width:140px;height:140px;border-color:rgba(0,245,255,.15);animation-duration:9s;}
+.about-core{
+  width:80px;height:80px;
+  background:linear-gradient(135deg,var(--xr),var(--purple));
+  border-radius:20px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:2rem;color:#020608;
+  box-shadow:0 0 60px rgba(0,212,255,.35);
+  position:relative;z-index:2;
+}
+.orbit-dot{
+  position:absolute;width:10px;height:10px;
+  border-radius:50%;
+}
+.od1{background:var(--xr);top:10px;left:50%;box-shadow:0 0 12px var(--xr);}
+.od2{background:var(--purple);top:50%;right:10px;box-shadow:0 0 12px var(--purple);}
+.od3{background:var(--green);bottom:10px;left:50%;box-shadow:0 0 12px var(--green);}
+.od4{background:var(--pink);top:50%;left:10px;box-shadow:0 0 12px var(--pink);}
+
+.about-text p{color:rgba(240,248,255,.7);margin-bottom:1rem;font-size:.97rem;}
+.about-text p strong{color:var(--xr);}
+.about-cards{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:1.6rem;}
+.acard{
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:10px;padding:1rem;
+  backdrop-filter:blur(10px);
+  transition:border-color .3s,transform .3s;
+}
+.acard:hover{border-color:rgba(0,212,255,.4);transform:translateY(-3px);}
+.acard-num{font-family:var(--font-h);font-size:1.6rem;font-weight:800;color:var(--xr);line-height:1;}
+.acard-lbl{font-family:var(--font-m);font-size:.68rem;color:var(--muted);letter-spacing:.1em;margin-top:.2rem;}
+
+/* =========================================================
+   SKILLS
+   ========================================================= */
+#skills{background:var(--bg2);}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.4rem;}
+.scat{
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:12px;padding:1.6rem;
+  backdrop-filter:blur(16px);
+  transition:all .3s;
+  position:relative;overflow:hidden;
+}
+.scat::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(0,212,255,.04),transparent);
+  opacity:0;transition:opacity .3s;
+}
+.scat:hover::before{opacity:1;}
+.scat:hover{border-color:rgba(0,212,255,.4);transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.3);}
+.scat-head{
+  display:flex;align-items:center;gap:.7rem;
+  margin-bottom:1.2rem;
+}
+.scat-icon{
+  width:36px;height:36px;
+  background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2);
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+  color:var(--xr);font-size:.85rem;
+}
+.scat-title{
+  font-family:var(--font-m);font-size:.72rem;
+  color:var(--xr);letter-spacing:.18em;text-transform:uppercase;
+}
+.stags{display:flex;flex-wrap:wrap;gap:.45rem;}
+.stag{
+  font-family:var(--font-m);font-size:.68rem;
+  background:rgba(0,212,255,.05);
+  border:1px solid rgba(0,212,255,.15);
+  color:rgba(240,248,255,.65);
+  padding:.25rem .65rem;border-radius:4px;
+  transition:all .2s;
+}
+.stag:hover{background:rgba(0,212,255,.15);border-color:var(--xr);color:var(--xr);}
+
+/* =========================================================
+   EXPERIENCE
+   ========================================================= */
+#experience{background:var(--bg1);}
+.exp-box{
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:16px;padding:2.5rem 2.8rem;
+  backdrop-filter:blur(20px);
+  position:relative;overflow:hidden;
+  max-width:900px;
+}
+.exp-box::before{
+  content:'';position:absolute;top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--xr),var(--purple));
+}
+.exp-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;margin-bottom:1.6rem;}
+.exp-role{
+  font-family:var(--font-h);font-size:1.5rem;
+  font-weight:800;color:var(--white);
+}
+.exp-company{color:var(--xr);font-size:1rem;margin-top:.3rem;}
+.exp-period{
+  font-family:var(--font-m);font-size:.72rem;
+  color:var(--muted);background:rgba(0,212,255,.08);
+  border:1px solid rgba(0,212,255,.2);
+  padding:.45rem 1rem;border-radius:100px;
+  white-space:nowrap;
+}
+.exp-list{list-style:none;display:flex;flex-direction:column;gap:.75rem;}
+.exp-list li{
+  display:flex;gap:.9rem;align-items:flex-start;
+  font-size:.93rem;color:rgba(240,248,255,.7);
+}
+.exp-list li::before{
+  content:'▸';color:var(--xr);
+  font-size:.75rem;margin-top:.25rem;flex-shrink:0;
+}
+.exp-metrics{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:1rem;margin-top:2rem;
+}
+.metric{
+  background:rgba(0,212,255,.05);
+  border:1px solid rgba(0,212,255,.15);
+  border-radius:10px;padding:1.1rem;text-align:center;
+  transition:all .3s;
+}
+.metric:hover{background:rgba(0,212,255,.1);border-color:rgba(0,212,255,.35);}
+.metric-n{
+  font-family:var(--font-h);font-size:1.6rem;
+  font-weight:800;color:var(--xr);
+}
+.metric-l{
+  font-family:var(--font-m);font-size:.65rem;
+  color:var(--muted);letter-spacing:.1em;margin-top:.2rem;
+}
+
+/* =========================================================
+   PROJECTS
+   ========================================================= */
+#projects{background:var(--bg2);}
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.8rem;}
+.pcard{
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:14px;overflow:hidden;
+  transition:all .35s;
+  backdrop-filter:blur(14px);
+  position:relative;
+}
+.pcard:hover{
+  border-color:rgba(0,212,255,.45);
+  transform:translateY(-8px);
+  box-shadow:0 24px 60px rgba(0,0,0,.5);
+}
+.pcard-vis{
+  height:160px;
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+/* Per-project gradient "previews" */
+.pv-healthcare{background:linear-gradient(135deg,#071520 0%,#0a2a3a 50%,#071520 100%);}
+.pv-industrial{background:linear-gradient(135deg,#120710 0%,#1e0a2a 50%,#120710 100%);}
+.pv-mr{background:linear-gradient(135deg,#051209 0%,#0a2818 50%,#051209 100%);}
+.pv-rehab{background:linear-gradient(135deg,#071520 0%,#0a1e36 50%,#071520 100%);}
+.pv-cad{background:linear-gradient(135deg,#130a05 0%,#2a1505 50%,#130a05 100%);}
+.pv-edu{background:linear-gradient(135deg,#120714 0%,#28073e 50%,#120714 100%);}
+.pv-stream{background:linear-gradient(135deg,#071218 0%,#0c2130 50%,#071218 100%);}
+.pv-vr{background:linear-gradient(135deg,#071520 0%,#0d2035 50%,#071520 100%);}
+
+/* Animated wireframe inside project card vis */
+.pcard-icon{
+  font-size:3.5rem;opacity:.22;
+  position:absolute;
+  animation:floatIcon 4s ease-in-out infinite;
+}
+.pcard-icon-fg{
+  font-size:2rem;position:relative;z-index:2;
+  padding:.8rem;border-radius:14px;
+  background:rgba(0,0,0,.3);
+  backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,.1);
+}
+.pcard-badge{
+  position:absolute;top:12px;right:12px;
+  font-family:var(--font-m);font-size:.62rem;
+  letter-spacing:.12em;padding:.25rem .65rem;
+  border-radius:100px;z-index:3;
+}
+.pb-vr{background:rgba(0,212,255,.15);color:var(--xr);border:1px solid rgba(0,212,255,.3);}
+.pb-ar{background:rgba(139,92,246,.15);color:var(--purple);border:1px solid rgba(139,92,246,.3);}
+.pb-mr{background:rgba(16,245,160,.15);color:var(--green);border:1px solid rgba(16,245,160,.3);}
+.pb-edu{background:rgba(236,72,153,.15);color:var(--pink);border:1px solid rgba(236,72,153,.3);}
+
+.pcard-body{padding:1.5rem 1.6rem;}
+.pcard-title{
+  font-family:var(--font-h);font-size:1.05rem;
+  font-weight:800;color:var(--white);margin-bottom:.3rem;
+}
+.pcard-sub{color:var(--xr);font-family:var(--font-m);font-size:.7rem;letter-spacing:.1em;margin-bottom:.8rem;}
+.pcard-desc{font-size:.87rem;color:rgba(240,248,255,.65);margin-bottom:1.1rem;line-height:1.6;}
+.pcard-stack{display:flex;flex-wrap:wrap;gap:.4rem;}
+.pstack-tag{
+  font-family:var(--font-m);font-size:.63rem;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.09);
+  color:rgba(240,248,255,.5);
+  padding:.18rem .5rem;border-radius:3px;
+}
+
+/* =========================================================
+   TECH MARQUEE
+   ========================================================= */
+#techwall{
+  background:var(--bg1);
+  padding:60px 0;overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+}
+.marquee-wrap{display:flex;gap:0;overflow:hidden;}
+.marquee-track{
+  display:flex;gap:2.5rem;align-items:center;
+  animation:marqueeScroll 22s linear infinite;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.marquee-track:nth-child(2){animation-delay:-11s;}
+.mtech{
+  font-family:var(--font-m);font-size:.78rem;
+  color:var(--muted);letter-spacing:.2em;text-transform:uppercase;
+  display:flex;align-items:center;gap:.6rem;
+  padding:.5rem 1.2rem;
+  border:1px solid rgba(0,212,255,.1);
+  border-radius:100px;
+  flex-shrink:0;
+}
+.mtech i{color:var(--xr);font-size:.8rem;}
+
+/* =========================================================
+   CERTIFICATIONS
+   ========================================================= */
+#certifications{background:var(--bg2);}
+.cert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.2rem;}
+.ccard{
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:12px;padding:1.5rem;
+  backdrop-filter:blur(16px);
+  display:flex;gap:1rem;align-items:flex-start;
+  transition:all .25s;
+}
+.ccard:hover{border-color:rgba(0,212,255,.4);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.3);}
+.ccard-icon{
+  width:44px;height:44px;border-radius:10px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;
+}
+.ci-unity{background:linear-gradient(135deg,#1a1a1a,#2a2a2a);color:#fff;border:1px solid #444;}
+.ci-cpp{background:linear-gradient(135deg,#004080,#0060c0);color:#fff;}
+.ci-agile{background:linear-gradient(135deg,#0052cc,#0078ff);color:#fff;}
+.ci-lean{background:linear-gradient(135deg,#006040,#009060);color:#fff;}
+.ccard-name{font-family:var(--font-b);font-size:.9rem;color:var(--white);font-weight:600;}
+.ccard-issuer{font-family:var(--font-m);font-size:.68rem;color:var(--muted);margin-top:.2rem;}
+
+/* =========================================================
+   EDUCATION
+   ========================================================= */
+#education{background:var(--bg1);}
+.edu-row{
+  display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;
+}
+.ecard{
+  background:var(--glass);border:1px solid var(--border);
+  border-radius:14px;padding:1.8rem 2rem;
+  backdrop-filter:blur(14px);
+  position:relative;overflow:hidden;
+  transition:all .3s;
+}
+.ecard::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+}
+.ecard.btech::before{background:linear-gradient(90deg,var(--xr),var(--xr2));}
+.ecard.dip::before{background:linear-gradient(90deg,var(--purple),var(--pink));}
+.ecard:hover{border-color:rgba(0,212,255,.4);transform:translateY(-4px);}
+.ecard-deg{font-family:var(--font-h);font-size:1rem;font-weight:800;color:var(--white);}
+.ecard-field{color:var(--xr);font-size:.88rem;margin-top:.25rem;}
+.ecard-inst{color:rgba(240,248,255,.5);font-family:var(--font-m);font-size:.72rem;margin-top:.5rem;}
+.ecard-year{
+  display:inline-block;margin-top:.8rem;
+  font-family:var(--font-m);font-size:.7rem;
+  color:var(--muted);background:rgba(0,212,255,.07);
+  border:1px solid rgba(0,212,255,.15);
+  padding:.25rem .75rem;border-radius:100px;
+}
+
+/* =========================================================
+   CONTACT
+   ========================================================= */
+#contact{background:var(--bg2);}
+.contact-wrap{display:grid;grid-template-columns:1fr 1.3fr;gap:3rem;align-items:start;}
+.contact-info h3{
+  font-family:var(--font-h);font-size:1.4rem;
+  font-weight:800;color:var(--white);margin-bottom:.8rem;
+}
+.contact-info p{color:rgba(240,248,255,.6);font-size:.95rem;margin-bottom:2rem;}
+.clinks{display:flex;flex-direction:column;gap:1rem;}
+.clink{
+  display:flex;align-items:center;gap:1rem;
+  font-family:var(--font-m);font-size:.8rem;
+  color:rgba(240,248,255,.6);transition:color .2s;
+}
+.clink:hover{color:var(--xr);}
+.clink-ic{
+  width:40px;height:40px;
+  background:rgba(0,212,255,.08);
+  border:1px solid rgba(0,212,255,.2);
+  border-radius:10px;display:flex;align-items:center;justify-content:center;
+  color:var(--xr);font-size:.9rem;flex-shrink:0;
+  transition:all .2s;
+}
+.clink:hover .clink-ic{background:rgba(0,212,255,.18);box-shadow:var(--glow-xr);}
+.cf{
+  background:var(--glass);border:1px solid var(--border);
+  border-radius:16px;padding:2rem;
+  backdrop-filter:blur(20px);position:relative;
+}
+.cf::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:16px 16px 0 0;
+  background:linear-gradient(90deg,var(--xr),var(--purple));
+}
+.fg{margin-bottom:1.2rem;}
+.fg label{
+  display:block;font-family:var(--font-m);font-size:.68rem;
+  color:var(--xr);letter-spacing:.18em;text-transform:uppercase;margin-bottom:.45rem;
+}
+.fg input,.fg textarea{
+  width:100%;background:rgba(0,212,255,.04);
+  border:1px solid rgba(0,212,255,.15);
+  border-radius:8px;color:var(--white);
+  font-family:var(--font-m);font-size:.82rem;
+  padding:.75rem 1rem;outline:none;
+  transition:border-color .2s,box-shadow .2s;resize:vertical;
+}
+.fg input:focus,.fg textarea:focus{
+  border-color:var(--xr);
+  box-shadow:0 0 0 2px rgba(0,212,255,.1);
+}
+.fg textarea{min-height:120px;}
+.cf-btn{width:100%;margin-top:.4rem;justify-content:center;}
+#cf-ok{
+  margin-top:.7rem;font-family:var(--font-m);font-size:.75rem;
+  color:var(--green);text-align:center;display:none;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+footer{
+  background:var(--bg);border-top:1px solid var(--border);
+  padding:2.2rem 5vw;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;
+}
+.ft-copy{font-family:var(--font-m);font-size:.72rem;color:var(--muted);}
+.ft-copy span{color:var(--xr);}
+.ft-tag{
+  font-family:var(--font-m);font-size:.68rem;
+  color:rgba(240,248,255,.25);letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.ft-socials{display:flex;gap:.8rem;}
+.ft-socials a{
+  width:38px;height:38px;
+  background:var(--bg1);border:1px solid var(--border);
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+  color:var(--muted);font-size:.88rem;transition:all .2s;
+}
+.ft-socials a:hover{color:var(--xr);border-color:rgba(0,212,255,.4);box-shadow:var(--glow-xr);}
+
+/* =========================================================
+   KEYFRAMES
+   ========================================================= */
+@keyframes riseIn{
+  from{opacity:0;transform:translateY(24px);}
+  to{opacity:1;transform:translateY(0);}
+}
+@keyframes floatBadge{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-5px);}
+}
+@keyframes floatIcon{
+  0%,100%{transform:translateY(0) rotate(0deg);}
+  50%{transform:translateY(-8px) rotate(4deg);}
+}
+@keyframes spin{
+  to{transform:rotate(360deg);}
+}
+@keyframes marqueeScroll{
+  from{transform:translateX(0);}
+  to{transform:translateX(-100%);}
+}
+@keyframes pulseGlow{
+  0%,100%{box-shadow:0 0 10px rgba(0,212,255,.2);}
+  50%{box-shadow:0 0 28px rgba(0,212,255,.7);}
+}
+@keyframes dashDraw{
+  to{stroke-dashoffset:0;}
+}
+
+/* =========================================================
+   HOLOGRAPHIC DIVIDER
+   ========================================================= */
+.holo-divider{
+  height:1px;background:linear-gradient(90deg,transparent,var(--xr),var(--purple),transparent);
+  margin:0;opacity:.4;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+@media(max-width:960px){
+  .about-wrap,.contact-wrap{grid-template-columns:1fr;}
+  .xr-device{display:none;}
+  .edu-row{grid-template-columns:1fr;}
+}
+@media(max-width:700px){
+  nav{padding:0 4vw;}
+  .nav-links{
+    display:none;flex-direction:column;
+    position:absolute;top:68px;left:0;right:0;
+    background:rgba(2,6,8,.97);padding:1.5rem 4vw;gap:1.2rem;
+    border-bottom:1px solid var(--border);
+  }
+  .nav-links.open{display:flex;}
+  .hamburger{display:flex;}
+  .nav-cta{display:none;}
+  section{padding:80px 4vw;}
+  .proj-grid{grid-template-columns:1fr;}
+  .exp-box{padding:1.6rem;}
+  footer{flex-direction:column;align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- ===================== NAVBAR ===================== -->
+<nav id="nav">
+  <div class="nav-logo">RAMBABU<em>.</em>XR</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#certifications">Certs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Hire Me</a>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+
+  <div class="hero-body">
+    <p class="hero-eyebrow">Lead XR Engineer · Unity3D · Meta Quest Specialist</p>
+    <h1 class="hero-title">
+      Building the Future<br/>of <span class="grad">Immersive Reality</span>
+    </h1>
+    <p class="hero-sub">
+      2+ years crafting production-grade VR, AR, and MR experiences deployed on Meta Quest,
+      WebXR, and Desktop VR — from healthcare and industrial training to live streaming.
+    </p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn btn-xr"><i class="fa fa-vr-cardboard"></i> View Projects</a>
+      <a href="#contact" class="btn btn-ghost"><i class="fa fa-paper-plane"></i> Contact Me</a>
+    </div>
+    <div class="hero-badges">
+      <span class="badge">Unity3D</span>
+      <span class="badge">Meta Quest</span>
+      <span class="badge">WebRTC</span>
+      <span class="badge">OpenXR</span>
+      <span class="badge">MQTT</span>
+      <span class="badge">Hand Tracking</span>
+      <span class="badge">C#</span>
+      <span class="badge">WebXR</span>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><div class="num" data-target="8">0</div><div class="lbl">Production XR Apps</div></div>
+      <div class="hstat"><div class="num" data-target="2">0</div><div class="lbl">+ Years Experience</div></div>
+      <div class="hstat"><div class="num" data-target="4">0</div><div class="lbl">Industry Verticals</div></div>
+      <div class="hstat"><div class="num" data-target="3">0</div><div class="lbl">Quest Platforms</div></div>
+    </div>
+  </div>
+
+  <!-- XR Headset Wireframe SVG -->
+  <div class="xr-device">
+    <svg viewBox="0 0 380 320" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <defs>
+        <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <!-- Main headset body -->
+      <path d="M60 140 Q60 100 100 95 L280 95 Q320 100 320 140 L320 190 Q320 230 280 235 L240 238 Q220 255 190 255 Q160 255 140 238 L100 235 Q60 230 60 190 Z" stroke="#00d4ff" stroke-width="1.2" fill="rgba(0,212,255,.04)" filter="url(#glow)" stroke-dasharray="800" stroke-dashoffset="800" style="animation:dashDraw 2.5s .5s ease forwards;"/>
+      <!-- Left lens -->
+      <ellipse cx="140" cy="165" rx="50" ry="42" stroke="#00f5ff" stroke-width="1" fill="rgba(0,245,255,.06)" filter="url(#glow)" stroke-dasharray="300" stroke-dashoffset="300" style="animation:dashDraw 1.5s 1.2s ease forwards;"/>
+      <!-- Right lens -->
+      <ellipse cx="240" cy="165" rx="50" ry="42" stroke="#00f5ff" stroke-width="1" fill="rgba(0,245,255,.06)" filter="url(#glow)" stroke-dasharray="300" stroke-dashoffset="300" style="animation:dashDraw 1.5s 1.5s ease forwards;"/>
+      <!-- Bridge -->
+      <path d="M190 155 L190 175" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="30" stroke-dashoffset="30" style="animation:dashDraw .5s 2s ease forwards;"/>
+      <!-- Head strap left -->
+      <path d="M60 165 Q20 165 15 190 Q12 210 30 225" stroke="#00d4ff" stroke-width="1" opacity=".6" stroke-dasharray="150" stroke-dashoffset="150" style="animation:dashDraw 1s 2.2s ease forwards;"/>
+      <!-- Head strap right -->
+      <path d="M320 165 Q360 165 365 190 Q368 210 350 225" stroke="#00d4ff" stroke-width="1" opacity=".6" stroke-dasharray="150" stroke-dashoffset="150" style="animation:dashDraw 1s 2.4s ease forwards;"/>
+      <!-- Inner ring left lens -->
+      <ellipse cx="140" cy="165" rx="30" ry="25" stroke="rgba(139,92,246,.5)" stroke-width=".7" fill="none" stroke-dasharray="180" stroke-dashoffset="180" style="animation:dashDraw 1.2s 1.8s ease forwards;"/>
+      <!-- Inner ring right lens -->
+      <ellipse cx="240" cy="165" rx="30" ry="25" stroke="rgba(139,92,246,.5)" stroke-width=".7" fill="none" stroke-dasharray="180" stroke-dashoffset="180" style="animation:dashDraw 1.2s 2s ease forwards;"/>
+      <!-- Lens glow dots -->
+      <circle cx="140" cy="165" r="6" fill="#00d4ff" opacity=".7" style="animation:pulseGlow 2s infinite;"/>
+      <circle cx="240" cy="165" r="6" fill="#00d4ff" opacity=".7" style="animation:pulseGlow 2s .5s infinite;"/>
+      <!-- Top decorative lines -->
+      <path d="M120 95 L120 80 L160 80" stroke="rgba(0,212,255,.4)" stroke-width=".8" stroke-dasharray="60" stroke-dashoffset="60" style="animation:dashDraw .8s 2.6s ease forwards;"/>
+      <path d="M260 95 L260 80 L220 80" stroke="rgba(0,212,255,.4)" stroke-width=".8" stroke-dasharray="60" stroke-dashoffset="60" style="animation:dashDraw .8s 2.6s ease forwards;"/>
+      <!-- Label -->
+      <text x="190" y="78" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="rgba(0,212,255,.6)" letter-spacing="3" opacity="0" style="animation:riseIn .5s 3s forwards;">META QUEST XR</text>
+      <!-- Data lines floating -->
+      <line x1="60" y1="120" x2="10" y2="90" stroke="rgba(0,212,255,.2)" stroke-width=".7" stroke-dasharray="4 4"/>
+      <line x1="320" y1="120" x2="370" y2="90" stroke="rgba(139,92,246,.2)" stroke-width=".7" stroke-dasharray="4 4"/>
+      <text x="2" y="88" font-family="DM Mono" font-size="7" fill="rgba(0,212,255,.4)">VR</text>
+      <text x="356" y="88" font-family="DM Mono" font-size="7" fill="rgba(139,92,246,.4)">MR</text>
+    </svg>
+  </div>
+</section>
+
+<div class="holo-divider"></div>
+
+<!-- ===================== ABOUT ===================== -->
+<section id="about">
+  <div class="sh">
+    <span class="sh-num">01</span>
+    <h2 class="sh-title">ABOUT ME</h2>
+    <div class="sh-line"></div>
+  </div>
+  <div class="about-wrap reveal">
+    <div class="about-visual">
+      <div class="about-ring ar1"></div>
+      <div class="about-ring ar2"></div>
+      <div class="about-ring ar3"></div>
+      <div class="orbit-dot od1"></div>
+      <div class="orbit-dot od2"></div>
+      <div class="orbit-dot od3"></div>
+      <div class="orbit-dot od4"></div>
+      <div class="about-core"><i class="fa fa-vr-cardboard"></i></div>
+    </div>
+    <div class="about-text">
+      <p>I'm <strong>Rambabu Nagisetti</strong>, a Lead XR Engineer based in Hyderabad, India, with a passion for building production-grade immersive experiences that solve real-world problems across healthcare, industrial training, education, and live streaming.</p>
+      <p>Since joining <strong>Vijaya Bhanu Engineering</strong> in October 2023, I have shipped <strong>8+ VR/AR/MR applications</strong> on Meta Quest 2, 3 and 3S — from a therapeutic VR relaxation platform for clinical settings to a 100% controller-less rehabilitation suite using advanced hand-tracking.</p>
+      <p>My edge: bridging cutting-edge <strong>Unity3D development</strong> with real-time communication infrastructure (WebRTC, MQTT, WebSockets), so immersive apps do more than just look good — they talk to the world.</p>
+      <div class="about-cards">
+        <div class="acard"><div class="acard-num">8+</div><div class="acard-lbl">XR Apps Shipped</div></div>
+        <div class="acard"><div class="acard-num">2+</div><div class="acard-lbl">Years in XR</div></div>
+        <div class="acard" style="border-color:rgba(139,92,246,.25);"><div class="acard-num" style="color:var(--purple);">3</div><div class="acard-lbl">Quest Platforms</div></div>
+        <div class="acard" style="border-color:rgba(16,245,160,.2);"><div class="acard-num" style="color:var(--green);">4</div><div class="acard-lbl">Industry Verticals</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="holo-divider"></div>
+
+<!-- ===================== SKILLS ===================== -->
+<section id="skills">
+  <div class="sh">
+    <span class="sh-num">02</span>
+    <h2 class="sh-title">TECHNICAL SKILLS</h2>
+    <div class="sh-line"></div>
+  </div>
+  <div class="skills-grid">
+    <div class="scat reveal">
+      <div class="scat-head"><div class="scat-icon"><i class="fa fa-cubes"></i></div><div class="scat-title">XR Platforms</div></div>
+      <div class="stags">
+        <span class="stag">Meta Quest 2</span><span class="stag">Meta Quest 3</span><span class="stag">Meta Quest 3S</span>
+        <span class="stag">SteamVR</span><span class="stag">OpenXR</span><span class="stag">WebXR</span>
+      </div>
+    </div>
+    <div class="scat reveal" style="transition-delay:.07s">
+      <div class="scat-head"><div class="scat-icon"><i class="fa fa-code"></i></div><div class="scat-title">Development</div></div>
+      <div class="stags">
+        <span class="stag">Unity3D</span><span class="stag">C# (Advanced)</span><span class="stag">C++</span>
+        <span class="stag">Python</span><span class="stag">ShaderLab</span><span class="stag">Visual Studio</span>
+      </div>
+    </div>
+    <div class="scat reveal" style="transition-delay:.14s">
+      <div class="scat-head"><div class="scat-icon"><i class="fa fa-network-wired"></i></div><div class="scat-title">Comms & Protocols</div></div>
+      <div class="stags">
+        <span class="stag">WebRTC</span><span class="stag">MQTT</span><span class="stag">WebSockets</span>
+        <span class="stag">REST APIs</span>
+      </div>
+    </div>
+    <div class="scat reveal" style="transition-delay:.21s">
+      <div class="scat-head"><div class="scat-icon"><i class="fa fa-hand-pointer"></i></div><div class="scat-title">XR Technologies</div></div>
+      <div class="stags">
+        <span class="stag">Virtual Reality</span><span class="stag">Augmented Reality</span><span class="stag">Mixed Reality</span>
+        <span class="stag">Hand Tracking</span><span class="stag">Controller-less XR</span><span class="stag">360° Video</span>
+      </div>
+    </div>
+    <div class="scat reveal" style="transition-delay:.28s">
+      <div class="scat-head"><div class="scat-icon"><i class="fa fa-tools"></i></div><div class="scat-title">Tools & Integrations</div></div>
+      <div class="stags">
+        <span class="stag">Firebase</span><span class="stag">Vuforia</span><span class="stag">Git</span>
+        <span class="stag">Insta360</span><span class="stag">Agile/Scrum</span><span class="stag">Oculus Store</span>
+      </div>
+    </div>
+    <div class="scat reveal" style="transition-delay:.35s">
+      <div class="scat-head"><div class="scat-icon"><i class="fa fa-users-cog"></i></div><div class="scat-title">Leadership</div></div>
+      <div class="stags">
+        <span class="stag">Team Lead</span><span class="stag">Sprint Planning</span><span class="stag">Code Review</span>
+        <span class="stag">Architecture Design</span><span class="stag">Release Management</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="holo-divider"></div>
+
+<!-- ===================== EXPERIENCE ===================== -->
+<section id="experience">
+  <div class="sh">
+    <span class="sh-num">03</span>
+    <h2 class="sh-title">EXPERIENCE</h2>
+    <div class="sh-line"></div>
+  </div>
+  <div class="exp-box reveal">
+    <div class="exp-header">
+      <div>
+        <div class="exp-role">Lead Engineer</div>
+        <div class="exp-company">Vijaya Bhanu Engineering Pvt. Ltd., Hyderabad</div>
+      </div>
+      <div class="exp-period"><i class="fa fa-calendar" style="margin-right:.5rem;"></i>Oct 2023 – Present</div>
+    </div>
+    <ul class="exp-list">
+      <li>Spearheaded development of 8+ production-grade VR, AR and MR applications on Meta Quest, WebXR and Desktop VR using Unity3D.</li>
+      <li>Architected real-time communication pipelines using WebRTC and MQTT/WebSockets, enabling voice, video and data streaming across Unity clients and web servers.</li>
+      <li>Led a team of Unity developers — managed sprint planning, code reviews and milestone delivery in an Agile environment.</li>
+      <li>Owned the full deployment lifecycle for the Oculus Store and SteamVR: optimization, versioning and release management.</li>
+      <li>Designed modular, scalable codebases optimized for performance across diverse XR hardware profiles.</li>
+    </ul>
+    <div class="exp-metrics">
+      <div class="metric"><div class="metric-n" data-target="8">0</div><div class="metric-l">XR Applications</div></div>
+      <div class="metric"><div class="metric-n" data-target="4">0</div><div class="metric-l">Industry Sectors</div></div>
+      <div class="metric"><div class="metric-n" style="color:var(--purple);">100%</div><div class="metric-l">Quest Deployment</div></div>
+      <div class="metric"><div class="metric-n" style="color:var(--green);">Agile</div><div class="metric-l">Delivery Model</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="holo-divider"></div>
+
+<!-- ===================== PROJECTS ===================== -->
+<section id="projects">
+  <div class="sh">
+    <span class="sh-num">04</span>
+    <h2 class="sh-title">FEATURED PROJECTS</h2>
+    <div class="sh-line"></div>
+  </div>
+  <div class="proj-grid">
+
+    <!-- Avika -->
+    <div class="pcard reveal">
+      <div class="pcard-vis pv-healthcare">
+        <i class="pcard-icon fa fa-heart-pulse" style="color:#00d4ff;font-size:5rem;"></i>
+        <div class="pcard-icon-fg">💊</div>
+        <span class="pcard-badge pb-vr">VR</span>
+      </div>
+      <div class="pcard-body">
+        <div class="pcard-title">Avika</div>
+        <div class="pcard-sub">VR PATIENT RELAXATION PLATFORM</div>
+        <p class="pcard-desc">Therapeutic 360° immersive VR application for clinical patient relaxation. Therapists remotely trigger modules via WebSocket command-and-control and monitor the patient's field of view through live screen mirroring on a web interface.</p>
+        <div class="pcard-stack">
+          <span class="pstack-tag">Unity3D</span><span class="pstack-tag">MQTT</span><span class="pstack-tag">WebSockets</span>
+          <span class="pstack-tag">REST APIs</span><span class="pstack-tag">Meta Quest</span><span class="pstack-tag">360° Video</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Drona -->
+    <div class="pcard reveal" style="transition-delay:.08s">
+      <div class="pcard-vis pv-industrial">
+        <i class="pcard-icon fa fa-industry" style="color:#8b5cf6;font-size:5rem;"></i>
+        <div class="pcard-icon-fg">⚡</div>
+        <span class="pcard-badge pb-vr">VR</span>
+      </div>
+      <div class="pcard-body">
+        <div class="pcard-title">Drona</div>
+        <div class="pcard-sub">INDUSTRIAL VR SAFETY TRAINING SUITE</div>
+        <p class="pcard-desc">Physics-based VR training modules for high-risk environments: Arc Flash, Confined Spaces, Work at Heights, and Cleanroom Entry. Includes spatial audio, animation controllers, and manual QA pipelines for end-to-end delivery.</p>
+        <div class="pcard-stack">
+          <span class="pstack-tag">Unity3D</span><span class="pstack-tag">Physics Sim</span><span class="pstack-tag">Spatial Audio</span>
+          <span class="pstack-tag">Meta Quest</span><span class="pstack-tag">C#</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Magic -->
+    <div class="pcard reveal" style="transition-delay:.16s">
+      <div class="pcard-vis pv-mr">
+        <i class="pcard-icon fa fa-chart-line" style="color:#10f5a0;font-size:5rem;"></i>
+        <div class="pcard-icon-fg">🔬</div>
+        <span class="pcard-badge pb-mr">MR</span>
+      </div>
+      <div class="pcard-body">
+        <div class="pcard-title">Magic</div>
+        <div class="pcard-sub">MR PROCESS CALIBRATION & ANALYTICS</div>
+        <p class="pcard-desc">Mixed Reality industrial productivity tool that guides users through 10-step workflows, records step durations with automated time-tracking, and pushes granular efficiency analytics to admin dashboards via MQTT.</p>
+        <div class="pcard-stack">
+          <span class="pstack-tag">Unity3D</span><span class="pstack-tag">MQTT</span><span class="pstack-tag">Hand Tracking</span>
+          <span class="pstack-tag">MR</span><span class="pstack-tag">Analytics</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rehab -->
+    <div class="pcard reveal" style="transition-delay:.24s">
+      <div class="pcard-vis pv-rehab">
+        <i class="pcard-icon fa fa-hand-sparkles" style="color:#00d4ff;font-size:5rem;"></i>
+        <div class="pcard-icon-fg">🖐️</div>
+        <span class="pcard-badge pb-vr">VR</span>
+      </div>
+      <div class="pcard-body">
+        <div class="pcard-title">Rehab</div>
+        <div class="pcard-sub">HAND-TRACKING VR REHABILITATION</div>
+        <p class="pcard-desc">Three gamified VR therapy activities (Bubble Blast, Ball Picking, Cube Moving) with 100% controller-less interactions. Precision gesture recognition with physics feedback delivers engaging rehabilitation exercises for patients.</p>
+        <div class="pcard-stack">
+          <span class="pstack-tag">Unity3D</span><span class="pstack-tag">Hand Tracking</span><span class="pstack-tag">Meta SDK</span>
+          <span class="pstack-tag">Physics</span><span class="pstack-tag">Gamification</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MetWin -->
+    <div class="pcard reveal" style="transition-delay:.32s">
+      <div class="pcard-vis pv-cad">
+        <i class="pcard-icon fa fa-cube" style="color:#f59e0b;font-size:5rem;"></i>
+        <div class="pcard-icon-fg">🏗️</div>
+        <span class="pcard-badge pb-mr">MR</span>
+      </div>
+      <div class="pcard-body">
+        <div class="pcard-title">MetWin</div>
+        <div class="pcard-sub">MR CAD MODEL VISUALIZER</div>
+        <p class="pcard-desc">High-fidelity Mixed Reality application for visualizing and inspecting complex CAD models and engineering prototypes. Intuitive hand-tracking for hold, rotate, and scale — enabling immersive digital twin inspection on-device.</p>
+        <div class="pcard-stack">
+          <span class="pstack-tag">Unity3D</span><span class="pstack-tag">CAD Import</span><span class="pstack-tag">Hand Tracking</span>
+          <span class="pstack-tag">Digital Twin</span><span class="pstack-tag">Meta Quest 3</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- STiXR -->
+    <div class="pcard reveal" style="transition-delay:.4s">
+      <div class="pcard-vis pv-edu">
+        <i class="pcard-icon fa fa-graduation-cap" style="color:#ec4899;font-size:5rem;"></i>
+        <div class="pcard-icon-fg">🧬</div>
+        <span class="pcard-badge pb-edu">EDU</span>
+      </div>
+      <div class="pcard-body">
+        <div class="pcard-title">STiXR</div>
+        <div class="pcard-sub">IMMERSIVE XR EDUCATION PLATFORM</div>
+        <p class="pcard-desc">Interactive XR classroom platform with anatomical modules (heart, kidney, respiratory) and Spatial Environment Switching — letting students learn in virtual beach or garden settings for enhanced focus and retention.</p>
+        <div class="pcard-stack">
+          <span class="pstack-tag">Unity3D</span><span class="pstack-tag">VR/MR</span><span class="pstack-tag">Anatomy 3D</span>
+          <span class="pstack-tag">Env Switching</span><span class="pstack-tag">Education</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Akira -->
+    <div class="pcard reveal" style="transition-delay:.48s">
+      <div class="pcard-vis pv-stream">
+        <i class="pcard-icon fa fa-broadcast-tower" style="color:#00d4ff;font-size:5rem;"></i>
+        <div class="pcard-icon-fg">📡</div>
+        <span class="pcard-badge pb-vr">VR</span>
+      </div>
+      <div class="pcard-body">
+        <div class="pcard-title">Akira</div>
+        <div class="pcard-sub">VR 360° LIVE STREAMING SOLUTION</div>
+        <p class="pcard-desc">Real-time 360° VR streaming platform built on Insta360 hardware pipelines for live panoramic broadcast with optimized low-latency protocols and a custom immersive in-VR navigation and content management UI.</p>
+        <div class="pcard-stack">
+          <span class="pstack-tag">Unity3D</span><span class="pstack-tag">Insta360</span><span class="pstack-tag">Low-Latency</span>
+          <span class="pstack-tag">360° Video</span><span class="pstack-tag">Live Stream</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 360 Vista Edge -->
+    <div class="pcard reveal" style="transition-delay:.56s">
+      <div class="pcard-vis pv-vr">
+        <i class="pcard-icon fa fa-street-view" style="color:#8b5cf6;font-size:5rem;"></i>
+        <div class="pcard-icon-fg">🏛️</div>
+        <span class="pcard-badge pb-vr">VR</span>
+      </div>
+      <div class="pcard-body">
+        <div class="pcard-title">360 Vista Edge</div>
+        <div class="pcard-sub">OFFLINE VR WALKTHROUGH PLATFORM</div>
+        <p class="pcard-desc">Edge-first VR walkthrough for industrial and architectural environments — fully functional offline. Spatial hotspot navigation system and local video/image management deliver high-performance 360° playback without internet.</p>
+        <div class="pcard-stack">
+          <span class="pstack-tag">Unity3D</span><span class="pstack-tag">Offline-First</span><span class="pstack-tag">360° Hotspots</span>
+          <span class="pstack-tag">Local Storage</span><span class="pstack-tag">Meta Quest</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== TECH MARQUEE ===================== -->
+<div id="techwall">
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <div class="mtech"><i class="fa fa-cube"></i> Unity3D</div>
+      <div class="mtech"><i class="fa fa-vr-cardboard"></i> Meta Quest</div>
+      <div class="mtech"><i class="fa fa-code"></i> C#</div>
+      <div class="mtech"><i class="fa fa-broadcast-tower"></i> WebRTC</div>
+      <div class="mtech"><i class="fa fa-network-wired"></i> MQTT</div>
+      <div class="mtech"><i class="fa fa-plug"></i> WebSockets</div>
+      <div class="mtech"><i class="fa fa-fire"></i> Firebase</div>
+      <div class="mtech"><i class="fa fa-hand-pointer"></i> Hand Tracking</div>
+      <div class="mtech"><i class="fa fa-globe"></i> WebXR</div>
+      <div class="mtech"><i class="fa fa-code-branch"></i> OpenXR</div>
+      <div class="mtech"><i class="fa fa-database"></i> REST APIs</div>
+      <div class="mtech"><i class="fa fa-git-alt"></i> Git</div>
+    </div>
+  </div>
+</div>
+
+<div class="holo-divider"></div>
+
+<!-- ===================== CERTIFICATIONS ===================== -->
+<section id="certifications">
+  <div class="sh">
+    <span class="sh-num">05</span>
+    <h2 class="sh-title">CERTIFICATIONS</h2>
+    <div class="sh-line"></div>
+  </div>
+  <div class="cert-grid">
+    <div class="ccard reveal">
+      <div class="ccard-icon ci-unity"><i class="fa fa-cube"></i></div>
+      <div><div class="ccard-name">Unity Basics Certification</div><div class="ccard-issuer">Unity Technologies</div></div>
+    </div>
+    <div class="ccard reveal" style="transition-delay:.07s">
+      <div class="ccard-icon ci-cpp"><i class="fa fa-code"></i></div>
+      <div><div class="ccard-name">C++ Certification</div><div class="ccard-issuer">Deccan Software</div></div>
+    </div>
+    <div class="ccard reveal" style="transition-delay:.14s">
+      <div class="ccard-icon ci-agile"><i class="fa fa-diagram-project"></i></div>
+      <div><div class="ccard-name">Agile Methodology Virtual Experience</div><div class="ccard-issuer">Cognizant</div></div>
+    </div>
+    <div class="ccard reveal" style="transition-delay:.21s">
+      <div class="ccard-icon ci-lean"><i class="fa fa-chart-line"></i></div>
+      <div><div class="ccard-name">Lean Six Sigma White Belt</div><div class="ccard-issuer">Council of Lean Six Sigma</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="holo-divider"></div>
+
+<!-- ===================== EDUCATION ===================== -->
+<section id="education">
+  <div class="sh">
+    <span class="sh-num">06</span>
+    <h2 class="sh-title">EDUCATION</h2>
+    <div class="sh-line"></div>
+  </div>
+  <div class="edu-row reveal">
+    <div class="ecard btech">
+      <div class="ecard-deg">B.Tech – Mechanical Engineering</div>
+      <div class="ecard-field">Engineering & Technology</div>
+      <div class="ecard-inst"><i class="fa fa-university" style="margin-right:.4rem;"></i>Adarsh College of Engineering (JNTUK)</div>
+      <span class="ecard-year"><i class="fa fa-calendar" style="margin-right:.4rem;"></i>2023</span>
+    </div>
+    <div class="ecard dip">
+      <div class="ecard-deg">Diploma – Mechanical Engineering</div>
+      <div class="ecard-field">Engineering & Technology</div>
+      <div class="ecard-inst"><i class="fa fa-university" style="margin-right:.4rem;"></i>Aditya College of Engineering & Technology</div>
+      <span class="ecard-year" style="border-color:rgba(139,92,246,.2);color:rgba(139,92,246,.8);"><i class="fa fa-calendar" style="margin-right:.4rem;"></i>2020</span>
+    </div>
+  </div>
+</section>
+
+<div class="holo-divider"></div>
+
+<!-- ===================== CONTACT ===================== -->
+<section id="contact">
+  <div class="sh">
+    <span class="sh-num">07</span>
+    <h2 class="sh-title">GET IN TOUCH</h2>
+    <div class="sh-line"></div>
+  </div>
+  <div class="contact-wrap reveal">
+    <div class="contact-info">
+      <h3>Engineering the Next Generation of Immersive Experiences.</h3>
+      <p>Open to senior XR engineering roles, consulting opportunities, and collaborative immersive technology projects. Let's build something extraordinary together.</p>
+      <div class="clinks">
+        <a href="mailto:rambabunagisettidev@gmail.com" class="clink">
+          <div class="clink-ic"><i class="fa fa-envelope"></i></div>
+          rambabunagisettidev@gmail.com
+        </a>
+        <a href="tel:+919849531341" class="clink">
+          <div class="clink-ic"><i class="fa fa-phone"></i></div>
+          +91 9849531341
+        </a>
+        <span class="clink">
+          <div class="clink-ic"><i class="fa fa-map-marker-alt"></i></div>
+          Hyderabad, India
+        </span>
+        <a href="https://www.linkedin.com/in/rambabuxr" class="clink">
+          <div class="clink-ic"><i class="fab fa-linkedin-in"></i></div>
+          https://www.linkedin.com/in/rambabuxr
+        </a>
+      </div>
+    </div>
+    <div class="cf">
+    <form id="contact-form">
+  <input type="hidden" name="access_key" value="2bf220c2-92f8-4157-a964-d372a31fdffd">
+  <input type="hidden" name="subject" value="New Message From SIVA.DEV">
+
+  <div class="fg">
+    <label for="cn">Full Name</label>
+    <input type="text" id="cn" name="name" placeholder="Your name" required>
+  </div>
+
+  <div class="fg">
+    <label for="ce">Email Address</label>
+    <input type="email" id="ce" name="email" placeholder="you@company.com" required>
+  </div>
+
+  <div class="fg">
+    <label for="cs">Subject</label>
+    <input type="text" id="cs" name="subject_user" placeholder="XR Project / Collaboration / Hire" required>
+  </div>
+
+  <div class="fg">
+    <label for="cm">Message</label>
+    <textarea id="cm" name="message" placeholder="Tell me about your immersive project..." required></textarea>
+  </div>
+
+  <button type="submit" class="btn btn-xr cf-btn">
+    <i class="fa fa-paper-plane"></i> Send Message
+  </button>
+
+  <p id="cf-ok" style="display:none;">
+    ✓ Message received — I'll get back to you shortly.
+  </p>
+</form>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="ft-copy">&copy; 2026 &nbsp;<span>Rambabu Nagisetti</span> &nbsp;·&nbsp; Lead XR Engineer</div>
+  <div class="ft-tag">Engineering the Next Generation of Immersive Experiences.</div>
+  <div class="ft-socials">
+    <a href="mailto:rambabunagisettidev@gmail.com" title="Email"><i class="fa fa-envelope"></i></a>
+    <a href="https://www.linkedin.com/in/rambabuxr" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+    <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+  </div>
+</footer>
+
+<!-- ===================== THREE.JS + JS ===================== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ============================================================
+   THREE.JS HERO BACKGROUND — XR wireframe environment
+   ============================================================ */
+(function(){
+  const canvas = document.getElementById('hero-canvas');
+  const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setSize(canvas.parentElement.offsetWidth, canvas.parentElement.offsetHeight);
+  renderer.setClearColor(0x000000,0);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, canvas.parentElement.offsetWidth/canvas.parentElement.offsetHeight, 0.1, 100);
+  camera.position.set(0,0,5);
+
+  // XR Grid ground
+  const gridGeo = new THREE.PlaneGeometry(30,30,30,30);
+  const gridMat = new THREE.MeshBasicMaterial({color:0x00d4ff,wireframe:true,opacity:.08,transparent:true});
+  const grid = new THREE.Mesh(gridGeo,gridMat);
+  grid.rotation.x = -Math.PI/2.2;
+  grid.position.y = -3;
+  scene.add(grid);
+
+  // Floating torus rings — XR halo effect
+  const rings = [];
+  const ringColors = [0x00d4ff,0x8b5cf6,0x00f5ff,0x10f5a0];
+  for(let i=0;i<5;i++){
+    const geo = new THREE.TorusGeometry(1.2+i*.8, .008+i*.003, 8, 60);
+    const mat = new THREE.MeshBasicMaterial({color:ringColors[i%4],opacity:.25-i*.03,transparent:true});
+    const ring = new THREE.Mesh(geo,mat);
+    ring.rotation.x = Math.random()*Math.PI;
+    ring.rotation.y = Math.random()*Math.PI;
+    ring.position.set((Math.random()-.5)*6,(Math.random()-.5)*3,(Math.random()-.5)*3-2);
+    scene.add(ring);
+    rings.push({mesh:ring,speedX:(.002+Math.random()*.003)*(Math.random()>.5?1:-1),speedY:(.001+Math.random()*.002)*(Math.random()>.5?1:-1)});
+  }
+
+  // Icosahedron wireframe — central XR object
+  const icoGeo = new THREE.IcosahedronGeometry(1.2,1);
+  const icoMat = new THREE.MeshBasicMaterial({color:0x00d4ff,wireframe:true,opacity:.18,transparent:true});
+  const ico = new THREE.Mesh(icoGeo,icoMat);
+  ico.position.set(2,0,-1);
+  scene.add(ico);
+
+  // Small floating cubes (XR data nodes)
+  const cubes=[];
+  for(let i=0;i<18;i++){
+    const s=.04+Math.random()*.1;
+    const geo=new THREE.BoxGeometry(s,s,s);
+    const mat=new THREE.MeshBasicMaterial({color:ringColors[i%4],opacity:.35+Math.random()*.35,transparent:true});
+    const cube=new THREE.Mesh(geo,mat);
+    cube.position.set((Math.random()-.5)*14,(Math.random()-.5)*8,(Math.random()-.5)*6-3);
+    scene.add(cube);
+    cubes.push({mesh:cube,vx:(Math.random()-.5)*.006,vy:(Math.random()-.5)*.006,vz:(Math.random()-.5)*.003});
+  }
+
+  // Particle field
+  const pCount=280;
+  const pGeo=new THREE.BufferGeometry();
+  const pPos=new Float32Array(pCount*3);
+  for(let i=0;i<pCount*3;i++) pPos[i]=(Math.random()-.5)*20;
+  pGeo.setAttribute('position',new THREE.BufferAttribute(pPos,3));
+  const pMat=new THREE.PointsMaterial({color:0x00d4ff,size:.04,opacity:.45,transparent:true,sizeAttenuation:true});
+  const particles=new THREE.Points(pGeo,pMat);
+  scene.add(particles);
+
+  let mouseX=0,mouseY=0;
+  document.addEventListener('mousemove',e=>{
+    mouseX=(e.clientX/window.innerWidth-.5)*2;
+    mouseY=-(e.clientY/window.innerHeight-.5)*2;
+  });
+
+  let t=0;
+  function animate(){
+    requestAnimationFrame(animate);
+    t+=.008;
+    rings.forEach(r=>{r.mesh.rotation.x+=r.speedX;r.mesh.rotation.y+=r.speedY;});
+    ico.rotation.x+=.004;ico.rotation.y+=.006;
+    cubes.forEach(c=>{
+      c.mesh.position.x+=c.vx;c.mesh.position.y+=c.vy;c.mesh.position.z+=c.vz;
+      c.mesh.rotation.x+=.01;c.mesh.rotation.y+=.01;
+      if(Math.abs(c.mesh.position.x)>7)c.vx*=-1;
+      if(Math.abs(c.mesh.position.y)>4)c.vy*=-1;
+      if(Math.abs(c.mesh.position.z)>4)c.vz*=-1;
+    });
+    particles.rotation.y+=.0005;
+    camera.position.x += (mouseX*.5 - camera.position.x)*.04;
+    camera.position.y += (mouseY*.3 - camera.position.y)*.04;
+    camera.lookAt(scene.position);
+    renderer.render(scene,camera);
+  }
+  animate();
+
+  window.addEventListener('resize',()=>{
+    const w=canvas.parentElement.offsetWidth,h=canvas.parentElement.offsetHeight;
+    renderer.setSize(w,h);
+    camera.aspect=w/h;camera.updateProjectionMatrix();
+  });
+})();
+
+/* ============================================================
+   CURSOR
+   ============================================================ */
+const cur=document.getElementById('cursor');
+const ring=document.getElementById('cursor-ring');
+let cx=0,cy=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{cx=e.clientX;cy=e.clientY;});
+(function moveCursor(){
+  rx+=(cx-rx)*.15;ry+=(cy-ry)*.15;
+  cur.style.left=cx+'px';cur.style.top=cy+'px';
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  requestAnimationFrame(moveCursor);
+})();
+document.querySelectorAll('a,button,.btn,.pcard,.scat').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{
+    cur.style.width='20px';cur.style.height='20px';
+    ring.style.width='56px';ring.style.height='56px';
+    ring.style.borderColor='rgba(139,92,246,.7)';
+  });
+  el.addEventListener('mouseleave',()=>{
+    cur.style.width='12px';cur.style.height='12px';
+    ring.style.width='38px';ring.style.height='38px';
+    ring.style.borderColor='rgba(0,212,255,.55)';
+  });
+});
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('active',window.scrollY>40));
+const hbg=document.getElementById('hamburger');
+const nl=document.getElementById('navLinks');
+hbg.addEventListener('click',()=>nl.classList.toggle('open'));
+nl.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>nl.classList.remove('open')));
+
+/* Active link */
+const secs=document.querySelectorAll('section[id]');
+window.addEventListener('scroll',()=>{
+  let id='';
+  secs.forEach(s=>{if(window.scrollY>=s.offsetTop-130)id=s.id;});
+  nl.querySelectorAll('a').forEach(a=>{
+    a.style.color=a.getAttribute('href')==='#'+id?'var(--xr)':'';
+  });
+});
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ============================================================
+   COUNT-UP NUMBERS
+   ============================================================ */
+const nums=document.querySelectorAll('[data-target]');
+const cio=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting||e.target.dataset.counted) return;
+    e.target.dataset.counted='1';
+    const target=+e.target.dataset.target;
+    let start=0;
+    const step=Math.ceil(target/40);
+    const id=setInterval(()=>{
+      start+=step;
+      if(start>=target){e.target.textContent=target+(target>=8?'+':'');clearInterval(id);}
+      else e.target.textContent=start;
+    },35);
+  });
+},{threshold:.5});
+nums.forEach(n=>cio.observe(n));
+
+/* ============================================================
+   CONTACT FORM
+   ============================================================ */
+document.getElementById("contact-form").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const data = new FormData(form);
+
+    const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: data
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+        document.getElementById("cf-ok").style.display = "block";
+        form.reset();
+    } else {
+        alert("Failed to send message. Please try again.");
+    }
+});
+</script>
+</body>
+</html>
