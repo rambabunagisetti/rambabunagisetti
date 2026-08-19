@@ -94,8 +94,8 @@ button{ font-family:inherit; cursor:none; }
 
 h1,h2,h3,h4{ font-family:var(--disp); font-weight:600; letter-spacing:-0.01em; }
 
-.section{ position:relative; padding:min(14vw,140px) 6vw; max-width:1400px; margin:0 auto; }
-.section-head{ margin-bottom:56px; max-width:720px; }
+.section{ position:relative; padding:72px 6vw; max-width:1400px; margin:0 auto; }
+.section-head{ margin-bottom:38px; max-width:720px; }
 .section-title{ font-size:clamp(30px,5vw,52px); margin-top:14px; line-height:1.05; }
 .section-sub{ margin-top:16px; color:var(--ink-dim); font-size:16px; max-width:60ch; }
 
@@ -246,9 +246,9 @@ nav.scrolled{
   padding:0 6vw; overflow:hidden;
 }
 .hero-inner{ position:relative; z-index:3; max-width:900px; padding-top:60px; }
-.hero-eyebrow{ font-family:var(--mono); font-size:12px; letter-spacing:.24em; text-transform:uppercase; color:var(--cyan); margin-bottom:22px; display:flex; align-items:center; gap:12px; }
+.hero-eyebrow{ font-family:var(--mono); font-size:12px; letter-spacing:.24em; text-transform:uppercase; color:var(--cyan); margin-bottom:12px; display:flex; align-items:center; gap:12px; }
 .hero-eyebrow .bracket{ color:var(--ink-mute); }
-.hero-name{ font-family:var(--disp); font-size:clamp(15px,1.6vw,17px); letter-spacing:.06em; color:var(--ink-dim); margin-bottom:6px; text-transform:uppercase; }
+.hero-name{ font-family:var(--disp); font-size:clamp(15px,1.6vw,17px); letter-spacing:.06em; color:var(--ink-dim); margin-bottom:16px; text-transform:uppercase; }
 .hero-title{
   font-family:var(--disp); font-weight:700; font-size:clamp(44px,9vw,108px); line-height:.96; letter-spacing:-0.02em;
   background: linear-gradient(180deg, #ffffff 0%, #c7d6db 60%, #7c8b93 100%);
@@ -265,7 +265,7 @@ nav.scrolled{
 .hero-stat .label{ font-family:var(--mono); font-size:10px; letter-spacing:.12em; color:var(--ink-mute); text-transform:uppercase; margin-top:4px; }
 .hero-cta{ display:flex; gap:16px; margin-top:48px; flex-wrap:wrap; }
 .hero-coords{
-  position:absolute; z-index:3; font-family:var(--mono); font-size:10px; color:var(--ink-mute); letter-spacing:.08em;
+  position:absolute; z-index:3; font-family:var(--mono); font-size:10px; color:var(--ink-mute); letter-spacing:.08em;margin-top: -30px
 }
 .hc-tl{ top:100px; left:6vw; } .hc-br{ bottom:40px; right:6vw; text-align:right; }
 @media (max-width:700px){ .hc-tl,.hc-br{ display:none; } }
@@ -453,33 +453,7 @@ nav.scrolled{
 .cert-card .c-issuer{ font-family:var(--mono); font-size:10px; color:var(--ink-mute); margin-top:8px; text-transform:uppercase; letter-spacing:.06em; }
 .cert-card .c-date{ font-family:var(--mono); font-size:10px; color:var(--cyan); margin-top:10px; }
 
-/* Certificate viewer */
-.cert-view-box{
-  margin-top:18px; padding:13px 14px; border:1px solid rgba(139,123,255,.22);
-  background:linear-gradient(135deg,rgba(139,123,255,.07),rgba(77,252,255,.025));
-  display:flex; align-items:center; justify-content:space-between; gap:12px;
-  cursor:pointer; position:relative; overflow:hidden;
-  transition:transform .35s var(--ease),border-color .35s var(--ease),box-shadow .35s var(--ease),background .35s var(--ease);
-}
-.cert-view-box::before{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(139,123,255,.16) 50%,transparent 70%);transform:translateX(-120%);transition:transform .7s var(--ease)}
-.cert-view-box:hover{transform:translateY(-3px);border-color:var(--violet);box-shadow:0 12px 35px rgba(139,123,255,.16);background:rgba(139,123,255,.08)}
-.cert-view-box:hover::before{transform:translateX(120%)}
-.cert-view-left{display:flex;align-items:center;gap:11px;position:relative;z-index:1}
-.cert-view-icon{width:38px;height:38px;border:1px solid var(--violet-dim);display:flex;align-items:center;justify-content:center;color:var(--violet);font-size:16px;background:rgba(139,123,255,.06)}
-.cert-view-copy{display:flex;flex-direction:column;gap:2px}
-.cert-view-title{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
-.cert-view-sub{font-size:10px;color:var(--ink-mute)}
-.cert-view-arrow{font-family:var(--mono);font-size:18px;color:var(--violet);position:relative;z-index:1;transition:transform .3s var(--ease)}
-.cert-view-box:hover .cert-view-arrow{transform:translate(3px,-3px)}
-
-.cert-preview{margin-top:26px;border:1px solid var(--line);background:#05070a;padding:10px;overflow:hidden}
-.cert-preview img{width:100%;max-height:65vh;object-fit:contain;background:#fff}
-.cert-preview-placeholder{min-height:180px;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--ink-mute);font:11px var(--mono);letter-spacing:.08em;padding:20px}
-.cert-modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}
-.cert-modal-open{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:10px 14px;border:1px solid var(--line-strong);color:var(--ink-dim);background:transparent}
-.cert-modal-open:hover{color:var(--cyan);border-color:var(--cyan)}
 @media(max-width:600px){.cert-preview{padding:6px}.cert-preview img{max-height:55vh}}
-
 
 /* ============================= AI x XR ============================= */
 .ai-grid{ display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
@@ -539,7 +513,6 @@ nav.scrolled{
 .contact-status .row{ display:flex; justify-content:space-between; font-family:var(--mono); font-size:12px; color:var(--ink-dim); }
 .contact-status .row b{ color:#6ee7a0; }
 
-
 /* ============================= CONTACT FORM ============================= */
 .contact-form{margin-top:28px;display:grid;gap:14px}
 .contact-form .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
@@ -568,7 +541,7 @@ footer .f-quote{ margin-top:20px; color:var(--ink-mute); font-size:13px; font-st
 a:focus-visible, button:focus-visible{ outline:2px solid var(--cyan); outline-offset:3px; }
 
 @media (max-width:600px){
-  .section{ padding:90px 6vw; }
+  .section{ padding:58px 6vw; }
   .hero-stats{ gap:26px; }
 }
 </style>
@@ -626,10 +599,10 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--cyan); outline-of
     <div class="hero-sub">UNITY3D <span>·</span> META QUEST <span>·</span> OPENXR <span>·</span> SPATIAL COMPUTING</div>
     <p class="hero-desc">Engineering immersive AR, VR and MR experiences for real-world applications — from hand-tracking rehabilitation suites to industrial safety training run on Meta Quest hardware.</p>
     <div class="hero-stats">
-      <div class="hero-stat"><div class="num" data-count="2" data-suffix="+">0</div><div class="label">Years Experience</div></div>
+      <div class="hero-stat"><div class="num" data-count="2" data-suffix=".10">0</div><div class="label">Years Experience</div></div>
       <div class="hero-stat"><div class="num" data-count="8" data-suffix="+">0</div><div class="label">XR Applications Shipped</div></div>
-      <div class="hero-stat"><div class="num" data-text="Unity3D">—</div><div class="label">Core Engine</div></div>
-      <div class="hero-stat"><div class="num" data-text="Meta Quest">—</div><div class="label">Primary Hardware</div></div>
+      <!--<div class="hero-stat"><div class="num" data-text="Unity3D">—</div><div class="label">Core Engine</div></div>
+      <div class="hero-stat"><div class="num" data-text="Meta Quest">—</div><div class="label">Primary Hardware</div></div>-->
     </div>
     <div class="hero-cta">
       <a href="#projects" class="btn primary">Explore the XR Lab <span class="arrow">→</span></a>
@@ -644,11 +617,11 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--cyan); outline-of
   <div class="about-grid">
     <div class="reveal">
       <div class="eyebrow">01 / About</div>
-      <h2 class="section-title">The Engineer Behind<br>the Experience</h2>
+      <h2 class="section-title">Lead XR Engineer <br> & Unity Developer</h2>
       <div class="about-copy" style="margin-top:30px;">
-        <p><strong>Rambabu Nagisetti</strong> is a Lead XR Engineer with 2+ years of hands-on experience developing and deploying 8+ production AR/VR/MR applications using Unity3D and C#, across healthcare, industrial training, education and live-streaming domains.</p>
-        <p>His work spans <strong>Meta Quest, WebXR and desktop VR</strong> — building on OpenXR and the XR Interaction Toolkit, with controller-less hand-tracking interaction, real-time 3D rendering, and integration of third-party SDKs, hardware partners and networking layers including WebRTC, MQTT/WebSockets and REST APIs.</p>
-        <p>Beyond implementation, he owns performance profiling, deployment and scalable Unity architecture — and mentors engineers through Agile/Scrum delivery. He's also actively folding AI-assisted development workflows, including Claude Code and structured prompt engineering, into daily practice.</p>
+        <p>As a <strong>Lead XR Engineer</strong>, I bring over two years of hands-on experience designing and deploying 8+ production AR/VR/MR applications. Using Unity3D and C#, I deliver high-impact immersive solutions across healthcare, industrial training, education, and live streaming.</p>
+        <p>My technical expertise spans <strong> Meta Quest, WebXR, and desktop VR</strong>using OpenXR and the XR Interaction Toolkit. I specialize in controller-less hand tracking, real-time 3D rendering, and integrating third-party SDKs, hardware, and networking layers like WebRTC, MQTT, and REST APIs.</p>
+        <p>Beyond development, I manage performance profiling, deployment, and scalable Unity architecture while mentoring teams using Agile/Scrum. To stay ahead, I also integrate AI-assisted workflows like Claude Code and advanced prompt engineering into my daily development practice.</p>
       </div>
       <ul class="about-list">
         <li>Hand Tracking</li><li>Controller-less Interaction</li>
@@ -663,7 +636,7 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--cyan); outline-of
         <span class="rec"><span class="d"></span>LIVE</span>
       </div>
       <div class="profile-stat-row">
-        <div class="profile-stat"><div class="num"><span class="counter" data-count="2">0</span><small>+ yrs</small></div><div class="lbl">Experience</div></div>
+        <div class="profile-stat"><div class="num"><span class="counter" data-count="2">0</span><small>.10 yrs</small></div><div class="lbl">Experience</div></div>
         <div class="profile-stat"><div class="num"><span class="counter" data-count="8">0</span><small>+</small></div><div class="lbl">Production Apps</div></div>
         <div class="profile-stat"><div class="num" style="font-size:20px;">Meta Quest</div><div class="lbl">2 / 3 / 3S</div></div>
         <div class="profile-stat"><div class="num" style="font-size:20px;">Hyderabad</div><div class="lbl">India</div></div>
@@ -702,7 +675,7 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--cyan); outline-of
 <section class="section" id="experience">
   <div class="section-head reveal">
     <div class="eyebrow">03 / Experience</div>
-    <h2 class="section-title">Mission Control</h2>
+    <h2 class="section-title">Core Engagement</h2>
     <p class="section-sub">A single continuous engagement — architecting, shipping and operating XR systems in production.</p>
   </div>
   <div class="timeline">
@@ -723,7 +696,7 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--cyan); outline-of
 <section class="section" id="projects">
   <div class="section-head reveal">
     <div class="eyebrow">04 / XR Project Lab</div>
-    <h2 class="section-title">Eight Systems, Shipped</h2>
+    <h2 class="section-title">Production Deployments</h2>
     <p class="section-sub">Each module below is a real production application. Click a card to open the full case study.</p>
   </div>
   <div class="proj-grid reveal-stagger" id="proj-grid"></div>
@@ -804,13 +777,13 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--cyan); outline-of
   <div class="section-head reveal">
     <div class="eyebrow">10 / Credentials</div>
     <h2 class="section-title">Certification Wall</h2>
-    <p class="section-sub">Click any credential for issuer and date detail.</p>
+    <p class="section-sub">Select any credential to view issuer and date details.</p>
   </div>
   <div class="cert-grid reveal-stagger" id="cert-grid"></div>
 </section>
 
 <div class="modal-overlay" id="cert-modal">
-  <div class="modal-box" style="max-width:520px; padding:40px;">
+  <div class="modal-box" style="max-width:520px; padding:40px;">  
     <button class="modal-close" id="cert-modal-close" aria-label="Close">✕</button>
     <div id="cert-modal-content"></div>
   </div>
@@ -820,7 +793,7 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--cyan); outline-of
 <section class="section" id="education">
   <div class="section-head reveal">
     <div class="eyebrow">11 / Education</div>
-    <h2 class="section-title">Foundation</h2>
+    <h2 class="section-title">Academic Profile</h2>
   </div>
   <div class="reveal" id="edu-list"></div>
 </section>
@@ -840,12 +813,11 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--cyan); outline-of
     <div class="reveal">
       <div class="eyebrow">13 / Contact</div>
       <h2 class="section-title" style="margin-bottom:26px;">Establish<br>Connection</h2>
-      <p class="contact-big">Have an XR system to design, ship or optimize? <a href="mailto:rambabunagisettidev@gmail.com">Start a conversation →</a></p>
+      <p class="contact-big">Have an XR vision to architect, scale, or optimize? <a href="mailto:rambabunagisettidev@gmail.com">Let’s collaborate →</a></p>
       <div class="contact-links">
         <div class="contact-link-row"><span class="lbl">Email</span><a class="val" href="mailto:rambabunagisettidev@gmail.com">rambabunagisettidev@gmail.com</a></div>
         <div class="contact-link-row"><span class="lbl">LinkedIn</span><a class="val" href="https://linkedin.com/in/rambabuxr" target="_blank" rel="noopener">linkedin.com/in/rambabuxr</a></div>
         <div class="contact-link-row"><span class="lbl">GitHub</span><a class="val" href="https://github.com/rambabunagisetti" target="_blank" rel="noopener">github.com/rambabunagisetti</a></div>
-        <div class="contact-link-row"><span class="lbl">Portfolio</span><a class="val" href="https://rambabunagisetti.vercel.app" target="_blank" rel="noopener">rambabunagisetti.vercel.app</a></div>
         <div class="contact-link-row"><span class="lbl">Location</span><span class="val">Hyderabad, India</span></div>
       </div>
     </div>
@@ -872,7 +844,7 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--cyan); outline-of
             <input
               type="hidden"
               name="subject"
-              value="New Contact Message From XR Portfolio"
+              value="Hey Ram, New Contact Message From XR Portfolio"
             >
 
             <!-- Sender name shown in Web3Forms -->
@@ -920,7 +892,6 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--cyan); outline-of
               </label>
 
             </div>
-
 
             <div class="form-row">
 
@@ -972,7 +943,6 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--cyan); outline-of
 
             </div>
 
-
             <label>
               Message
 
@@ -985,13 +955,12 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--cyan); outline-of
 
             </label>
 
-
             <!-- ==================== FORM ACTION ==================== -->
 
             <div class="form-actions">
 
               <div class="form-note">
-                YOUR MESSAGE WILL BE SECURELY TRANSMITTED THROUGH WEB3FORMS.
+                YOUR MESSAGE WILL BE SECURELY TRANSMITTED.
               </div>
 
               <button
@@ -1004,7 +973,6 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--cyan); outline-of
               </button>
 
             </div>
-
 
             <!-- ==================== STATUS MESSAGE ==================== -->
 
@@ -1030,7 +998,6 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--cyan); outline-of
     <a href="mailto:rambabunagisettidev@gmail.com">Email</a>
     <a href="https://linkedin.com/in/rambabuxr" target="_blank" rel="noopener">LinkedIn</a>
     <a href="https://github.com/rambabunagisetti" target="_blank" rel="noopener">GitHub</a>
-    <a href="https://rambabunagisetti.vercel.app" target="_blank" rel="noopener">Portfolio</a>
   </div>
 </footer>
 
@@ -1099,22 +1066,22 @@ const PERF = [
 ];
 
 const CERTS = [
-  {n:'Unity Mobile AR Development', i:'Unity Technologies', d:'Issued 28 Jul 2026', img:'certificates/Unity_Mobile_AR_Development.jpeg'},
-  {n:'Unity VR Development', i:'Unity Technologies', d:'Issued 27 Jun 2026', img:'certificates/Unity_VR_Development.jpeg'},
-  {n:'Unity Creative Core', i:'Unity Technologies', d:'Issued 08 Aug 2026', img:'certificates/Unity_Creative_Core.jpeg'},
-  {n:'Unity Essentials Pathway', i:'Unity Technologies', d:'Issued 09 May 2025', img:'certificates/Unity_Essentials_Pathway.jpeg'},
-  {n:'Foundational C# with Microsoft', i:'freeCodeCamp / Microsoft', d:'Completed 19 Jun 2026', img:'certificates/Foundational_CSharp_with_Microsoft.jpeg'},
-  {n:'Foundations of Prompt Engineering', i:'AWS Training & Certification', d:'Completed 25 Jul 2026', img:'certificates/Foundations_of_Prompt_Engineering.jpeg'},
-  {n:'Claude Code 101', i:'Anthropic', d:'2026', img:'certificates/Claude_Code_101.jpeg'},
-  {n:'Claude 101', i:'Anthropic', d:'2026', img:'certificates/Claude_101.jpeg'},
-  {n:'Introduction to Subagents', i:'Anthropic', d:'2026', img:'certificates/Introduction_to_Subagents.jpeg'},
-  {n:'Introduction to Claude Cowork', i:'Anthropic', d:'2026', img:'certificates/Introduction_to_Claude_Cowork.jpeg'},
-  {n:'C++ Certification', i:'Deccan Software', d:'2024', img:'certificates/CPP_Certification.jpeg'},
-  {n:'Agile Methodology Virtual Experience', i:'Cognizant', d:'2024', img:'certificates/Agile_Methodology_Virtual_Experience.jpeg'},
-  {n:'Lean Six Sigma White Belt', i:'Council of Lean Six Sigma', d:'2024', img:'certificates/Lean_Six_Sigma_White_Belt.jpeg'},
-  {n:'Autodesk Digital Innovation Summit', i:'Autodesk — Attendance', d:'20 Aug 2025', img:'certificates/Autodesk_Digital_Innovation_Summit.jpeg'},
-  {n:'CSS Essentials', i:'Cisco Networking Academy', d:'24 Jun 2026', img:'certificates/CSS_Essentials.jpeg'},
-  {n:'HTML Essentials', i:'Cisco Networking Academy', d:'24 Jun 2026', img:'certificates/HTML_Essentials.jpeg'},
+  {n:'Unity Mobile AR Development', i:'Unity Technologies', d:'Issued 28 Jul 2026'},
+  {n:'Unity VR Development', i:'Unity Technologies', d:'Issued 27 Jun 2026'},
+  {n:'Unity Creative Core', i:'Unity Technologies', d:'Issued 08 Aug 2026'},
+  {n:'Unity Essentials Pathway', i:'Unity Technologies', d:'Issued 09 May 2025'},
+  {n:'Foundational C# with Microsoft', i:'freeCodeCamp / Microsoft', d:'Completed 19 Jun 2026'},
+  {n:'Foundations of Prompt Engineering', i:'AWS Training & Certification', d:'Completed 25 Jul 2026'},
+  {n:'Claude Code 101', i:'Anthropic', d:'2026'},
+  {n:'Claude 101', i:'Anthropic', d:'2026'},
+  {n:'Introduction to Subagents', i:'Anthropic', d:'2026'},
+  {n:'Introduction to Claude Cowork', i:'Anthropic', d:'2026'},
+  {n:'C++ Certification', i:'Deccan Software', d:'2024'},
+  {n:'Agile Methodology Virtual Experience', i:'Cognizant', d:'2024'},
+  {n:'Lean Six Sigma White Belt', i:'Council of Lean Six Sigma', d:'2024'},
+  {n:'Autodesk Digital Innovation Summit', i:'Autodesk — Attendance', d:'20 Aug 2025'},
+  {n:'CSS Essentials', i:'Cisco Networking Academy', d:'24 Jun 2026'},
+  {n:'HTML Essentials', i:'Cisco Networking Academy', d:'24 Jun 2026'},
 ];
 
 const EDU = [
@@ -1246,33 +1213,57 @@ const deployPlat = document.getElementById('deploy-platforms');
 const certGrid = document.getElementById('cert-grid');
 CERTS.forEach((c,i)=>{
   const el = document.createElement('div');
-  el.className='cert-card'; el.tabIndex=0; el.setAttribute('role','button');
-  el.innerHTML = `<div class="c-icon">◆</div><div class="c-name">${c.n}</div><div class="c-issuer">${c.i}</div><div class="c-date">${c.d}</div>
-    <div class="cert-view-box" role="button" tabindex="0" aria-label="View certificate: ${c.n}">
-      <div class="cert-view-left"><div class="cert-view-icon">▣</div><div class="cert-view-copy"><span class="cert-view-title">View Certificate</span></div></div>
-      <div class="cert-view-arrow">↗</div>
-    </div>`;
-  const viewBox = el.querySelector('.cert-view-box');
+  el.className='cert-card';
+  el.tabIndex=0;
+  el.setAttribute('role','button');
+  el.setAttribute('aria-label', `View credential details: ${c.n}`);
+
+  // The whole certificate card is clickable.
+  // No "View Certificate" button and no certificate image are shown.
+  el.innerHTML = `
+    <div class="c-icon">◆</div>
+    <div class="c-name">${c.n}</div>
+    <div class="c-issuer">${c.i}</div>
+    <div class="c-date">${c.d}</div>`;
+
   const open = (event)=>{
     if(event) event.stopPropagation();
+
     document.getElementById('cert-modal-content').innerHTML = `
-      <div class="modal-eyebrow">Credential Viewer</div>
+      <div class="modal-eyebrow">Credential Details</div>
       <div class="modal-title" style="font-size:26px;">${c.n}</div>
-      <div class="modal-meta"><span><b>Issuer:</b> ${c.i}</span></div>
-      <div class="modal-meta" style="margin-top:6px;"><span><b>Date:</b> ${c.d}</span></div>
-      <div class="cert-preview"><img src="${c.img}" alt="${c.n} certificate" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="cert-preview-placeholder" style="display:none">CERTIFICATE IMAGE NOT FOUND<br><br>Place the JPEG at: ${c.img}</div></div>
-      <div class="cert-modal-actions"><a class="cert-modal-open" href="${c.img}" target="_blank" rel="noopener">Open Full Image ↗</a></div>`;
-    document.getElementById('cert-modal').classList.add('open'); document.body.style.overflow='hidden';
+      <div class="modal-meta" style="margin-top:22px;">
+        <span><b>Issuer:</b> ${c.i}</span>
+      </div>
+      <div class="modal-meta" style="margin-top:10px;">
+        <span><b>Date:</b> ${c.d}</span>
+      </div>`;
+
+    document.getElementById('cert-modal').classList.add('open');
+    document.body.style.overflow='hidden';
   };
+
   el.addEventListener('click', open);
-  el.addEventListener('keydown', e=>{ if(e.key==='Enter') open(); });
+  el.addEventListener('keydown', e=>{
+    if(e.key==='Enter' || e.key===' '){
+      e.preventDefault();
+      open(e);
+    }
+  });
+
   certGrid.appendChild(el);
 });
+
 document.getElementById('cert-modal-close').addEventListener('click', ()=>{
-  document.getElementById('cert-modal').classList.remove('open'); document.body.style.overflow='';
+  document.getElementById('cert-modal').classList.remove('open');
+  document.body.style.overflow='';
 });
+
 document.getElementById('cert-modal').addEventListener('click', e=>{
-  if(e.target.id==='cert-modal'){ e.currentTarget.classList.remove('open'); document.body.style.overflow=''; }
+  if(e.target.id==='cert-modal'){
+    e.currentTarget.classList.remove('open');
+    document.body.style.overflow='';
+  }
 });
 
 const eduList = document.getElementById('edu-list');
