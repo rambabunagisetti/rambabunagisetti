@@ -857,40 +857,166 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--cyan); outline-of
          <div class="row"><span>Timezone</span><span>IST (UTC+5:30)</span></div>
          <div class="row"><span>Status</span><b>OPEN TO OPPORTUNITIES</b></div>
        </div>
-        <form  class="contact-form" id="contact-form"action="https://api.web3forms.com/submit" method="POST">
-          <input type="hidden" name="access_key" value="30a77ed3-c26e-466b-9794-3f25300f1eda">
-           <div class="form-row">
-           <label>Name
-             <input type="text" id="contact-name" name="name" placeholder="Your name" autocomplete="name" required>
-           </label>
-           <label>Email
-             <input type="email" id="contact-email" name="email" placeholder="you@example.com" autocomplete="email" required>
-           </label>
-         </div>
-         <div class="form-row">
-           <label>Company / Organization
-             <input type="text" id="contact-company" name="company" placeholder="Optional" autocomplete="organization">
-           </label>
-           <label>Project Type
-             <select id="contact-type" name="type">
-               <option>XR Engineering</option>
-               <option>Unity Development</option>
-               <option>AR / VR / MR Project</option>
-               <option>Technical Collaboration</option>
-               <option>Job Opportunity</option>
-               <option>Other</option>
-             </select>
-           </label>
-         </div>
-         <label>Message
-           <textarea id="contact-message" name="message" placeholder="Tell Rambabu what you are building..." required></textarea>
-         </label>
-         <div class="form-actions">
-           <div class="form-note">SUBMIT OPENS YOUR EMAIL CLIENT WITH THE MESSAGE ADDRESSED TO RAMBABU.</div>
-           <button class="btn primary" type="submit">Transmit Message <span class="arrow">→</span></button>
-         </div>
-         <div class="form-success">✓ MESSAGE PACKET PREPARED — YOUR EMAIL CLIENT SHOULD OPEN NOW.</div>
-       </form>
+          <form class="contact-form" id="contact-form">
+
+            <!-- ==================== WEB3FORMS ==================== -->
+
+            <!-- Replace this with your NEW Web3Forms access key -->
+            <input
+              type="hidden"
+              name="access_key"
+              value="30a77ed3-c26e-466b-9794-3f25300f1eda"
+            >
+
+            <!-- Email subject -->
+            <input
+              type="hidden"
+              name="subject"
+              value="New Contact Message From XR Portfolio"
+            >
+
+            <!-- Sender name shown in Web3Forms -->
+            <input
+              type="hidden"
+              name="from_name"
+              value="XR Portfolio Website"
+            >
+
+            <!-- Honeypot spam protection -->
+            <input
+              type="checkbox"
+              name="botcheck"
+              style="display:none;"
+              tabindex="-1"
+              autocomplete="off"
+            >
+
+            <!-- ==================== FORM FIELDS ==================== -->
+
+            <div class="form-row">
+
+              <label>
+                Name
+                <input
+                  type="text"
+                  id="contact-name"
+                  name="name"
+                  placeholder="Your name"
+                  autocomplete="name"
+                  required
+                >
+              </label>
+
+              <label>
+                Email
+                <input
+                  type="email"
+                  id="contact-email"
+                  name="email"
+                  placeholder="you@example.com"
+                  autocomplete="email"
+                  required
+                >
+              </label>
+
+            </div>
+
+
+            <div class="form-row">
+
+              <label>
+                Company / Organization
+                <input
+                  type="text"
+                  id="contact-company"
+                  name="company"
+                  placeholder="Optional"
+                  autocomplete="organization"
+                >
+              </label>
+
+              <label>
+                Project Type
+
+                <select
+                  id="contact-type"
+                  name="project_type"
+                >
+                  <option value="XR Engineering">
+                    XR Engineering
+                  </option>
+
+                  <option value="Unity Development">
+                    Unity Development
+                  </option>
+
+                  <option value="AR / VR / MR Project">
+                    AR / VR / MR Project
+                  </option>
+
+                  <option value="Technical Collaboration">
+                    Technical Collaboration
+                  </option>
+
+                  <option value="Job Opportunity">
+                    Job Opportunity
+                  </option>
+
+                  <option value="Other">
+                    Other
+                  </option>
+
+                </select>
+
+              </label>
+
+            </div>
+
+
+            <label>
+              Message
+
+              <textarea
+                id="contact-message"
+                name="message"
+                placeholder="Tell me what you are building..."
+                required
+              ></textarea>
+
+            </label>
+
+
+            <!-- ==================== FORM ACTION ==================== -->
+
+            <div class="form-actions">
+
+              <div class="form-note">
+                YOUR MESSAGE WILL BE SECURELY TRANSMITTED THROUGH WEB3FORMS.
+              </div>
+
+              <button
+                class="btn primary"
+                type="submit"
+                id="contact-submit"
+              >
+                Transmit Message
+                <span class="arrow">→</span>
+              </button>
+
+            </div>
+
+
+            <!-- ==================== STATUS MESSAGE ==================== -->
+
+            <div
+              class="form-success"
+              id="form-success"
+              style="display:none;"
+              role="status"
+              aria-live="polite"
+            ></div>
+
+          </form>
      </div>
   </div>
 </section>
@@ -1823,76 +1949,139 @@ try{
   }
 })();
 
-/* ==================== CONTACT FORM / WEB3FORMS ==================== */
-const contactForm = document.getElementById('contact-form');
+  /* ==================== CONTACT FORM / WEB3FORMS ==================== */
 
-if (contactForm) {
-  contactForm.addEventListener('submit', async function (e) {
-    e.preventDefault();
+  const contactForm = document.getElementById('contact-form');
 
-    const submitButton = contactForm.querySelector('button[type="submit"]');
-    const originalText = submitButton.innerHTML;
+  if (contactForm) {
 
-    submitButton.disabled = true;
-    submitButton.innerHTML = 'TRANSMITTING...';
+    contactForm.addEventListener('submit', async function (e) {
 
-    const formData = new FormData(contactForm);
+      // Prevent Web3Forms from redirecting to another page
+      e.preventDefault();
 
-    try {
-      const response = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        body: formData
-      });
+      const submitButton =
+        contactForm.querySelector('button[type="submit"]');
 
-      const result = await response.json();
+      const successMessage =
+        contactForm.querySelector('.form-success');
 
-      if (result.success) {
-        contactForm.classList.add('sent');
+      const originalText = submitButton.innerHTML;
 
-        const successMessage = contactForm.querySelector('.form-success');
+      // Disable button while sending
+      submitButton.disabled = true;
 
-        if (successMessage) {
-          successMessage.textContent =
-            '✓ MESSAGE SENT SUCCESSFULLY — RAMBABU WILL RECEIVE YOUR MESSAGE.';
-          successMessage.style.display = 'block';
-        }
+      submitButton.innerHTML = `
+        TRANSMITTING...
+        <span class="arrow">◌</span>
+      `;
 
-        contactForm.reset();
+      // Hide previous message
+      if (successMessage) {
+        successMessage.style.display = 'none';
+        successMessage.textContent = '';
+      }
 
-        submitButton.innerHTML = 'MESSAGE SENT ✓';
+      // Collect form data
+      const formData = new FormData(contactForm);
 
-        setTimeout(() => {
-          contactForm.classList.remove('sent');
+      try {
+
+        const response = await fetch(
+          'https://api.web3forms.com/submit',
+          {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'Accept': 'application/json'
+            }
+          }
+        );
+
+        const result = await response.json();
+
+        console.log('Web3Forms Response:', result);
+
+        if (result.success) {
+
+          /* ==================== SUCCESS ==================== */
+
+          contactForm.classList.add('sent');
 
           if (successMessage) {
-            successMessage.style.display = 'none';
+
+            successMessage.textContent =
+              '✓ MESSAGE TRANSMITTED SUCCESSFULLY — THANK YOU FOR REACHING OUT.';
+
+            successMessage.style.display = 'block';
+
+            successMessage.style.color = '#00ff9d';
           }
 
-          submitButton.disabled = false;
-          submitButton.innerHTML = originalText;
-        }, 5000);
+          // Clear form
+          contactForm.reset();
 
-      } else {
-        throw new Error(result.message || 'Unable to send message.');
+          // Change button
+          submitButton.innerHTML = `
+            MESSAGE SENT ✓
+          `;
+
+          // Restore after 5 seconds
+          setTimeout(() => {
+
+            contactForm.classList.remove('sent');
+
+            if (successMessage) {
+              successMessage.style.display = 'none';
+              successMessage.textContent = '';
+            }
+
+            submitButton.disabled = false;
+
+            submitButton.innerHTML = originalText;
+
+          }, 5000);
+
+        } else {
+
+          /* ==================== API ERROR ==================== */
+
+          throw new Error(
+            result.message ||
+            'Web3Forms could not process your submission.'
+          );
+
+        }
+
+      } catch (error) {
+
+        /* ==================== ERROR ==================== */
+
+        console.error(
+          'Web3Forms Error:',
+          error
+        );
+
+        if (successMessage) {
+
+          successMessage.textContent =
+            '✕ MESSAGE COULD NOT BE SENT — PLEASE TRY AGAIN.';
+
+          successMessage.style.display = 'block';
+
+          successMessage.style.color = '#ff4d6d';
+
+        }
+
+        submitButton.disabled = false;
+
+        submitButton.innerHTML = originalText;
+
       }
 
-    } catch (error) {
+    });
 
-      console.error('Web3Forms Error:', error);
-
-      const successMessage = contactForm.querySelector('.form-success');
-
-      if (successMessage) {
-        successMessage.textContent =
-          '✕ MESSAGE COULD NOT BE SENT. PLEASE TRY AGAIN.';
-        successMessage.style.display = 'block';
-      }
-
-      submitButton.disabled = false;
-      submitButton.innerHTML = originalText;
-    }
-  });
-}
+  }
 </script>
 </body>
 </html>
